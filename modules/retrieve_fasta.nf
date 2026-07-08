@@ -5,8 +5,6 @@
  */
 process RETRIEVE_REFERENCE {
 
-    container ""
-
     input:
     val ref_id
 
@@ -23,8 +21,6 @@ process RETRIEVE_REFERENCE {
  * Retrieve NCBI and UniProt sequences for a given taxonomy ID
  */
 process RETRIEVE_PROTEOME {
-
-    container ""
 
     input:
     val tax_id

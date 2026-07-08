@@ -1,0 +1,10 @@
+name: esm-env
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch
+  - pip
+  - pip:
+      - git+https://github.com/facebookresearch/esm.git

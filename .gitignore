@@ -1,0 +1,17 @@
+# Nextflow core files
+.nextflow/
+.nextflow.log*
+work/
+
+# Pipeline outputs
+results/
+
+# Python cache (just in case)
+__pycache__/
+*.pyc
+
+# Virtual environments (if you test locally outside conda)
+conda-envs/
+
+# Miniforge installer
+Miniforge3-Linux-x86_64.sh
