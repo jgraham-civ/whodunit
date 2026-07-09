@@ -12,6 +12,7 @@ process RANK_SIMILARITY {
     input:
     path ref_dir
     path proteome_dir
+    path proteome_fasta
     val top_n
     val model
 
@@ -23,6 +24,7 @@ process RANK_SIMILARITY {
     python ${projectDir}/scripts/similarity.py \\
         --reference-dir ${ref_dir} \\
         --proteome-dir ${proteome_dir} \\
+        --proteome-fasta ${proteome_fasta} \\
         --model ${model} \\
         --top-n ${top_n}
     """

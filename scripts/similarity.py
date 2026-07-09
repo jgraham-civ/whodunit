@@ -4,6 +4,8 @@ import csv
 import torch
 import argparse
 
+# ---  HANDLING EMBEDDINGS --- #
+
 def parse_layer_from_model(model_string):
     """
     Extracts the layer number from ESM model names.
@@ -40,10 +42,43 @@ def load_embeddings(dir_path, layer):
         
     return labels, torch.stack(embeddings)
 
+
+# --- HANDLING METDATA --- #
+
+PE_MEANINGS = {
+    "1": "Experimental evidence at protein level",
+    "2": "Experimental evidence at transcript level",
+    "3": "Protein inferred from homology",
+    "4": "Protein predicted",
+    "5": "Protein uncertain",
+}
+
+def parse_fasta_headers(fasta_path):
+    """Maps accession -> (description, organism, PE meaning) from raw UniProt headers."""
+    headers = {}
+    with open(fasta_path) as f:
+        for line in f:
+            if not line.startswith(">"):
+                continue
+
+            accession = line.split("|")[1]
+            rest = line[1:].strip()
+
+            description = rest.split(" ", 1)[1].split(" OS=")[0]
+            organism = rest.split(" OS=")[1].split(" OX=")[0]
+            pe_code = rest.split(" PE=")[1].split(" ")[0]
+
+            headers[accession] = (description, organism, PE_MEANINGS.get(pe_code, ""))
+    return headers
+
+
+# --- RUN SCRIPT --- #
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--reference-dir", required=True)
     parser.add_argument("--proteome-dir", required=True)
+    parser.add_argument("--proteome-fasta", required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--top-n", type=int, required=True)
     
@@ -57,6 +92,7 @@ def main():
         
     # 2. Load Proteome Search Space
     target_labels, target_embs = load_embeddings(args.proteome_dir, layer)
+    headers = parse_fasta_headers(args.proteome_fasta)
     
     # 3. Compute Cosine Similarity
     similarities = torch.nn.functional.cosine_similarity(ref_emb, target_embs)
@@ -69,10 +105,13 @@ def main():
     output_filename = f"top_{args.top_n}_similar_proteins.csv"
     with open(output_filename, mode='w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["Rank", "Reference", "Target", "Cosine_Similarity"])
+        writer.writerow(["Rank", "Target", "Reference", "Cosine_Similarity", "Description", "Organism", "Protein_Existence"])
         
         for rank, (score, idx) in enumerate(zip(top_scores, top_indices), start=1):
-            writer.writerow([rank, ref_label[0], target_labels[idx], f"{score.item():.4f}"])
+            target = target_labels[idx]
+            description, organism, pe = headers.get(target, ("", "", ""))
+            writer.writerow([rank, target, ref_label[0], f"{score.item():.4f}",
+                              description, organism, pe])
 
 if __name__ == "__main__":
     main()

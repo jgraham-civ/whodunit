@@ -17,6 +17,7 @@ params {
    tax_id: String
    model: String
    top_n: Integer
+   batch_name: String
 }
 
 workflow {
@@ -39,7 +40,8 @@ workflow {
     // Perform similarity scoring & ranking
     RANK_SIMILARITY(
         EMBED_REFERENCE.out.ref_emb,   
-        EMBED_PROTEOME.out.tax_emb,    
+        EMBED_PROTEOME.out.tax_emb,
+        RETRIEVE_PROTEOME.out.tax_fasta,    
         params.top_n,
         params.model 
     )
@@ -57,18 +59,18 @@ workflow {
 output {
     // Configure publish targets
     ref_fasta {
-        path 'sequences'
+        path "${params.batch_name}/sequences"
     }
     tax_fasta {
-        path 'sequences'
+        path "${params.batch_name}/sequences"
     }
     ref_emb {
-        path 'embeddings'
+        path "${params.batch_name}/embeddings"
     }
     tax_emb {
-        path 'embeddings'
+        path "${params.batch_name}/embeddings"
     }
     ranked_csv {
-        path 'hits'
+        path "${params.batch_name}/hits"
     }
 }
