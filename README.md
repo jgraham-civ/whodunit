@@ -12,7 +12,7 @@ Much like language models in natural language processing learn grammar and meani
 
 Whilst the meaning of each embedding dimension is abstract and not directly interpretable, the similarity of embeddings at the global level should, in theory, reflect functional similarity.
 
-By calculating the **Cosine Similarity** between a reference protein embedding and embeddings in a taxon-wide 'search space' and returning the best results, this pipeline acts as a large scale homology search tool.
+By calculating the **cosine similarity** between a reference protein embedding and embeddings in a taxon-wide 'search space' and returning the best results, this pipeline acts as a large scale homology search tool.
 
 **Inputs:** 
 * UniProt ID of a reference protein
@@ -33,7 +33,8 @@ This pipeline uses **Conda** to manage its environment automatically via Nextflo
 * **Nextflow** (>= 26.0)
 * **Conda** The pipeline handles the rest by building from the included `esm-environment.yml`:
 
-  name: esm-env
+```yml
+name: esm-env
     channels:
     - pytorch
     - bioconda
@@ -46,6 +47,7 @@ This pipeline uses **Conda** to manage its environment automatically via Nextflo
     - pip
     - pip:
         - git+https://github.com/facebookresearch/esm git@2b369911bb5b4b0dda914521b9475cad1656b2ac
+```
 
 *Note: Conda is enabled by default in the `nextflow.config`. Environments are cached in `${projectDir}/conda-envs`.*
 
