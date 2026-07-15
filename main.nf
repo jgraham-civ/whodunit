@@ -7,7 +7,9 @@ include { CLEAN_HEADERS as CLEAN_REF_HEADERS} from './modules/extract_embeddings
 include { CLEAN_HEADERS as CLEAN_TAX_HEADERS} from './modules/extract_embeddings.nf'
 include { EMBED_REFERENCE } from './modules/extract_embeddings.nf'
 include { EMBED_PROTEOME } from './modules/extract_embeddings.nf'
-include { RANK_SIMILARITY } from './modules/rank_similarity.nf'
+include { MAKE_BLAST_DB } from './modules/make_blast_db.nf'
+include { RUN_BLASTP } from './modules/run_blastp.nf'
+include { GENERATE_CSV } from './modules/generate_csv.nf'
 
 /*
  * Pipeline parameters
@@ -29,7 +31,13 @@ workflow {
     RETRIEVE_REFERENCE(params.ref_id)
     RETRIEVE_PROTEOME(params.tax_id)
 
-    // Clean FASTA headers
+    // Make BLAST Database
+    MAKE_BLAST_DB(RETRIEVE_PROTEOME.out.tax_fasta)
+
+    // Run BLASTp
+    RUN_BLASTP(RETRIEVE_REFERENCE.out.ref_fasta, MAKE_BLAST_DB.out.blast_db)
+
+    // Clean FASTA headers for embedding
     ref_fasta_cleaned = CLEAN_REF_HEADERS(RETRIEVE_REFERENCE.out.ref_fasta)
     tax_fasta_cleaned = CLEAN_TAX_HEADERS(RETRIEVE_PROTEOME.out.tax_fasta)
 
@@ -37,13 +45,15 @@ workflow {
     EMBED_REFERENCE(ref_fasta_cleaned, params.model)
     EMBED_PROTEOME(tax_fasta_cleaned, params.model)
 
-    // Perform similarity scoring & ranking
-    RANK_SIMILARITY(
-        EMBED_REFERENCE.out.ref_emb,   
+    // Generate summary CSV
+    GENERATE_CSV(
+        EMBED_REFERENCE.out.ref_emb,
         EMBED_PROTEOME.out.tax_emb,
-        RETRIEVE_PROTEOME.out.tax_fasta,    
+        RETRIEVE_PROTEOME.out.tax_fasta,
+        RETRIEVE_REFERENCE.out.ref_fasta,
+        RUN_BLASTP.out.blast_results,
         params.top_n,
-        params.model 
+        params.model
     )
 
     publish:
@@ -52,7 +62,7 @@ workflow {
     tax_fasta = RETRIEVE_PROTEOME.out.tax_fasta
     ref_emb = EMBED_REFERENCE.out.ref_emb
     tax_emb = EMBED_PROTEOME.out.tax_emb
-    ranked_csv = RANK_SIMILARITY.out.ranked_csv
+    ranked_csv = GENERATE_CSV.out
 
 }
 
