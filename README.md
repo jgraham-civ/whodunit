@@ -46,7 +46,7 @@ name: esm-env
     - blast=2.17.0
     - pip
     - pip:
-        - git+https://github.com/facebookresearch/esm git@2b369911bb5b4b0dda914521b9475cad1656b2ac
+        - git+https://github.com/facebookresearch/esm.git@2b369911bb5b4b0dda914521b9475cad1656b2ac
 ```
 
 *Note: Conda is enabled by default in the `nextflow.config`. Environments are cached in `${projectDir}/conda-envs`.*
