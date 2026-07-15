@@ -22,7 +22,7 @@ By calculating the **Cosine Similarity** between a reference protein embedding a
 * User-defined batch name
 
 **Output:**
-* A ranked CSV of the target proteome, scored by cosine similarity to the reference. Alongside protein accession IDs, this CSV reports protein descriptions, sequence identities, the percentage of positive-scoring matches. The pipeline also runs protein BLAST against a local, taxon-wide BLAST database and reports the bitscores and e-values of each hit.
+* A ranked CSV of the target proteome, scored by cosine similarity to the reference. Alongside protein accession IDs, this CSV reports protein metadata and sequence identities. The pipeline also runs protein BLAST against a local, taxon-wide BLAST database and reports the bitscores and e-values of each hit.
 
 ---
 
