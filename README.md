@@ -10,7 +10,7 @@ Traditional sequence alignment algorithms (like BLAST) struggle to identify func
 
 Much like language models in natural language processing learn grammar and meaning from large collections of text, PLMs are trained on vast numbers of protein sequences to learn the ‘grammar’ and ‘vocabulary’ that underpin their structure and function. PLMs can implicitly learn biochemical, physical, structural and functional properties from sequence alone, outputting these properties as embeddings: Numerical, vectorised representations of the input sequence.
 
-Whilst the meaning of each embedding dimension is abstract and not directly interpretable, the similarity of embeddings at the global level should, in theory, reflect functional similarity.
+Whilst the meaning of each embedding dimension is abstract and not directly interpretable, the similarity of embeddings at the global level should reflect functional similarity.
 
 By calculating the **cosine similarity** between a reference protein embedding and embeddings in a taxon-wide 'search space' and returning the best results, this pipeline acts as a large scale homology search tool.
 
