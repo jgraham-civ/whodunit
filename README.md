@@ -94,6 +94,8 @@ For proof-of-concept, we include a few profiles:
 
 5. No statistical significance framework for cosine similarity
 
+6. Molecular docking analysis, as done in my MSc thesis, is not currently built into the pipeline.
+
 These limitations offer many avenues for future work.
 
 ---
