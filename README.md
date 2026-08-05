@@ -16,13 +16,13 @@ By calculating the **cosine similarity** between a reference protein embedding a
 
 **Inputs:** 
 * UniProt ID of a reference protein
-* Taxon ID of a target proteome
+* Taxon ID of a target organism
 * An ESM model selection (e.g. `esm2_t12_35M_UR50D`)
 * The number of proteins to return in the ranked CSV
 * User-defined batch name
 
 **Output:**
-* A ranked CSV of the target proteome, scored by cosine similarity to the reference. Alongside protein accession IDs, this CSV reports protein metadata and sequence identities. The pipeline also runs protein BLAST against a local, taxon-wide BLAST database and reports the bitscores and e-values of each hit.
+* A ranked CSV of the target organism's proteins, scored by cosine similarity to the reference. Alongside protein accession IDs, this CSV reports protein metadata and sequence identities. The pipeline also runs protein BLAST against a local, taxon-wide BLAST database and reports the bitscores and e-values of each hit.
 
 ---
 
