@@ -12,7 +12,7 @@ Much like language models in natural language processing learn grammar and meani
 
 Whilst the meaning of each embedding dimension is abstract and not directly interpretable, the similarity of embeddings at the global level should reflect functional similarity.
 
-By calculating the **cosine similarity** between a reference protein embedding and embeddings in a taxon-wide 'search space' and returning the best results, this pipeline acts as a large scale homology search tool.
+By calculating the **cosine similarity** between a reference protein embedding and embeddings in a taxon-wide 'search space' and returning the best results, this pipeline acts as a homology search tool.
 
 **Inputs:** 
 * UniProt ID of a reference protein
